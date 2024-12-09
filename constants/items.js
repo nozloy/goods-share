@@ -44,7 +44,7 @@ export const Items = [
 	{
 		id: 7,
 		name: 'Шлем виртуальной реальности Oculus Quest 3S',
-		image: '/images/oculus.webp',
+		image: '/images/oculus_quest.png',
 		price: 350,
 		description: '',
 	},
