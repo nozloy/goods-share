@@ -27,7 +27,7 @@ export default function ProductPage({
 		return <h1>Товар не найден</h1>
 	}
 	return (
-		<div className='min-h-svh flex flex-col'>
+		<div className='h-screen flex flex-col'>
 			<Header title={''} rbutton='share' />
 			<div className=' flex flex-col items-center justify-center relative mt-10 m-4 pb-6 border border-muted-foreground/10 rounded-xl'>
 				<div className='flex items-center justify-start w-[200px] h-[200px]  mx-auto'>
