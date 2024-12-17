@@ -1,16 +1,34 @@
 'use client'
 import React from 'react'
 import { cn } from '@/lib/utils'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Share2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 interface Props {
 	className?: string
 	title: string
+	rbutton?: string
 }
 
-export const Header: React.FC<Props> = ({ className, title }) => {
+export const Header: React.FC<Props> = ({ className, title, rbutton }) => {
 	const router = useRouter()
+
+	const handleShare = async () => {
+		if (navigator.share) {
+			try {
+				await navigator.share({
+					title: 'Ларек',
+					text: 'Аренда нужных устройств в твоем доме.',
+					url: window.location.href,
+				})
+			} catch (error) {
+				console.error('Ошибка при использовании Web Share API:', error)
+			}
+		} else {
+			alert('Функция "Поделиться" не поддерживается в этом браузере.')
+		}
+	}
+
 	return (
 		<div
 			className={cn(
@@ -25,6 +43,14 @@ export const Header: React.FC<Props> = ({ className, title }) => {
 			>
 				<ArrowLeft size={24} />
 			</div>
+			{rbutton === 'share' && (
+				<div
+					onClick={() => handleShare()}
+					className='absolute w-10 h-10 top-5 right-1'
+				>
+					<Share2 />
+				</div>
+			)}
 		</div>
 	)
 }

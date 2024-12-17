@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
-import localFont from 'next/font/local'
 import './globals.css'
 import { Footer } from '@/components/shared/footer'
+import { Montserrat } from 'next/font/google'
 
-const geistSans = localFont({
-	src: './fonts/GeistVF.woff',
-	variable: '--font-geist-sans',
-	weight: '100 900',
-})
-const geistMono = localFont({
-	src: './fonts/GeistMonoVF.woff',
-	variable: '--font-geist-mono',
-	weight: '100 900',
+const montserrat = Montserrat({
+	subsets: ['cyrillic'],
+	variable: '--font-montserrat',
+	weight: ['400', '500', '600', '700', '800', '900'],
 })
 
 export const metadata: Metadata = {
@@ -28,7 +23,7 @@ export default function RootLayout({
 		<html lang='en'>
 			<head></head>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col  min-h-lvh w-full justify-center mx-auto relative`}
+				className={`${montserrat.variable} antialiased flex flex-col min-h-dvh w-full justify-center mx-auto relative font-montserrat`}
 			>
 				{children}
 				<Footer />

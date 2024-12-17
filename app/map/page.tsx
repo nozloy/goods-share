@@ -43,7 +43,7 @@ export default function MapPage() {
 			</YMaps>
 			<div
 				className='z-50 absolute bottom-24 left-2 p-2 bg-background rounded-xl flex flex-row items-center gap-2 border border-muted-foreground'
-				onClick={() => focusOnPoint([55.732083, 49.185431])} // Ссылка на точку
+				onClick={() => focusOnPoint([55.732083, 49.185431])}
 			>
 				<Image
 					src='/icon-192x192.png'

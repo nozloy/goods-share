@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
-
 import React, { useState } from 'react'
 import { cn } from '@/lib/utils'
 import {
@@ -89,22 +88,26 @@ export const Footer: React.FC<Props> = ({ className }) => {
 	]
 
 	return (
-		<div
-			className={cn(
-				'sticky z-50 bottom-0 w-full left-0 right-0 flex flex-row items-center justify-between gap-2 mt-auto h-[80px] neo p-4 pb-8 *:text-slate-400 *:rounded-full *:p-2',
-				className,
+		<>
+			{!pathname.includes('item') && (
+				<div
+					className={cn(
+						'sticky z-50 bottom-0 w-full left-0 right-0 flex flex-row items-center justify-between gap-2 mt-auto h-[80px] neo p-4 pb-8 *:text-slate-400 *:rounded-full *:p-2',
+						className,
+					)}
+				>
+					{footerItems.map((item, index) => (
+						<FooterItem
+							key={index}
+							icon={item.icon}
+							name={item.name}
+							activePage={getActivePage()}
+							label={item.label}
+							onClick={item.onClick}
+						/>
+					))}
+				</div>
 			)}
-		>
-			{footerItems.map((item, index) => (
-				<FooterItem
-					key={index}
-					icon={item.icon}
-					name={item.name}
-					activePage={getActivePage()}
-					label={item.label}
-					onClick={item.onClick}
-				/>
-			))}
-		</div>
+		</>
 	)
 }

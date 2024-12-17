@@ -4,3 +4,19 @@ export interface User {
 	photoUrl?: string
 	id?: number
 }
+
+export interface iItem {
+	id: number
+	name: string
+	image: string
+	price: number
+	description: string
+	guide: string
+}
+
+export interface iRentTypes {
+	id: number
+	name: string
+	available: boolean
+	mod: number
+}
