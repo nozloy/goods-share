@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { Footer } from '@/components/shared/footer'
 import { Montserrat } from 'next/font/google'
+import { Toaster } from '@/components/ui/sonner'
 
 const montserrat = Montserrat({
 	subsets: ['cyrillic'],
@@ -26,6 +27,8 @@ export default function RootLayout({
 				className={`${montserrat.variable} antialiased flex flex-col min-h-dvh w-full justify-center mx-auto relative font-montserrat`}
 			>
 				{children}
+				<Toaster position='top-center' />
+
 				<Footer />
 			</body>
 		</html>

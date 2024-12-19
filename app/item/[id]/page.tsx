@@ -27,7 +27,7 @@ export default function ProductPage({
 		return <h1>Товар не найден</h1>
 	}
 	return (
-		<div className='h-screen flex flex-col'>
+		<div className='h-dvh flex flex-col'>
 			<Header title={''} rbutton='share' />
 			<div className=' flex flex-col items-center justify-center relative mt-10 m-4 pb-6 border border-muted-foreground/10 rounded-xl'>
 				<div className='flex items-center justify-start w-[200px] h-[200px]  mx-auto'>
@@ -100,7 +100,7 @@ export default function ProductPage({
 					</div>
 				</div>
 			</div>
-			<div className='mt-auto pb-8 flex flex-row items-center justify-between px-6 *:text-xl font-bold'>
+			<div className='mt-auto pb-4 flex flex-row items-center justify-between px-6 *:text-xl font-bold'>
 				<div>от {item.price}₽</div>
 				<OrderRentSheet item={item} />
 			</div>

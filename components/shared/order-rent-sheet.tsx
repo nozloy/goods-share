@@ -16,6 +16,8 @@ import { iRentTypes } from '@/@types'
 import { rentTypes } from '@/constants/rent-types'
 import { Slider } from '../ui/slider'
 import { Input } from '../ui/input'
+import { toast } from 'sonner'
+
 interface Props {
 	className?: string
 	item: iItem
@@ -26,7 +28,16 @@ export const OrderRentSheet: React.FC<Props> = ({ className, item }) => {
 		rentTypes[0],
 	)
 	const [bonus, setBonus] = React.useState(0)
-
+	const [promo, setPromo] = React.useState(false)
+	const promoSubmit = (e: string) => {
+		if (e.toLowerCase() === 'promo') {
+			toast.success('Промокод активирован')
+			setPromo(true)
+		} else {
+			toast.error('Промокод не найден')
+			setPromo(false)
+		}
+	}
 	return (
 		<div className={cn('', className)}>
 			<Sheet>
@@ -36,12 +47,12 @@ export const OrderRentSheet: React.FC<Props> = ({ className, item }) => {
 					</Button>
 				</SheetTrigger>
 				<SheetContent className='w-full'>
-					<SheetHeader>
+					<SheetHeader className='mb-2'>
 						<SheetTitle>Оформление аренды</SheetTitle>
 					</SheetHeader>
 					{item && (
 						<div className='bg-background'>
-							<div className='px-2 w-full *:pt-4 h-screen overflow-y-auto invisible-scrollbar pb-16'>
+							<div className='px-2 w-full *:pt-4 h-dvh overflow-y-auto invisible-scrollbar pb-16'>
 								<div className='w-full rounded-xl shadow-lg flex flex-row gap-4 p-2'>
 									<div className='relative w-[64px] h-[64px] rounded-xl'>
 										<Image
@@ -122,6 +133,11 @@ export const OrderRentSheet: React.FC<Props> = ({ className, item }) => {
 										type='text'
 										placeholder='Введите промокод'
 										className='rounded-2xl outline-none w-full bg-secondary h-10'
+										onKeyDown={e => {
+											if (e.key === 'Enter') {
+												promoSubmit((e.target as HTMLInputElement).value)
+											}
+										}}
 									/>
 								</div>
 
@@ -137,10 +153,28 @@ export const OrderRentSheet: React.FC<Props> = ({ className, item }) => {
 										<p>Залог</p>
 										<p>{item.price * 20}₽</p>
 									</div>
+									{bonus > 0 && (
+										<div className='w-full flex flex-row items-center justify-between'>
+											<p>Списано баллов</p>
+											<p>{bonus}₽</p>
+										</div>
+									)}
+									{promo && (
+										<div className='w-full flex flex-row items-center justify-between'>
+											<p>Промокод</p>
+											<p>500₽</p>
+										</div>
+									)}
 									<tr className='border border-muted-foreground/20 border-dashed w-full' />
 									<div className='w-full flex flex-row items-center justify-between'>
 										<p>Итого</p>
-										<p>{item.price * activeRentType.mod + item.price * 20}₽</p>
+										<p>
+											{item.price * activeRentType.mod +
+												item.price * 20 -
+												bonus -
+												(promo ? 500 : 0)}
+											₽ ₽
+										</p>
 									</div>
 								</div>
 								<div>
