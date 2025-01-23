@@ -1,24 +1,29 @@
 'use client'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
+import { useUserStore } from '@/lib/user-store'
 import { getRents } from '@/lib/prisma'
 import { Items } from '@/constants/items'
 import Image from 'next/image'
 import { SquareChevronRight } from 'lucide-react'
 import { Rents } from '@prisma/client'
-import { initApp } from './telegram'
+import { useEffect, useState } from 'react'
 
 interface Props {
 	className?: string
 }
 
-export const CurrentRent: React.FC<Props> = async ({ className }) => {
-	const user = await initApp()
-	let rents: Rents[] = []
+export const CurrentRent: React.FC<Props> = ({ className }) => {
+	const user = useUserStore(state => state.user)
+	const [rents, setRents] = useState<Rents[]>([])
 
-	if (user && user.id) {
-		rents = await getRents(user.id)
-	}
+	useEffect(() => {
+		const fetchRents = async () => {
+			const rents = await getRents(user?.id || 1)
+			setRents(rents)
+		}
+		fetchRents()
+	}, [user?.id])
 
 	return (
 		<div className={cn('flex flex-col gap-2 px-4', className)}>

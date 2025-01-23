@@ -2,25 +2,33 @@
 import React, { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { initApp } from './telegram'
-import { User } from '@/@types'
 import Image from 'next/image'
 import { Check, OctagonAlert, User as UserIcon } from 'lucide-react'
 import { SupportDrawer } from './support-drawer'
 import { NotificationSheet } from './notification-sheet'
+import { useUserStore } from '@/lib/user-store'
+
 interface Props {
 	className?: string
 }
 
 export const UserCard: React.FC<Props> = ({ className }) => {
-	const [user, setUser] = useState<User | undefined>()
+	const user = useUserStore(state => state.user)
+	const setUser = useUserStore(state => state.setUser)
+
 	const [verified, setVerified] = useState<boolean>(false)
 	useEffect(() => {
 		const fetchUser = async () => {
 			const userData = await initApp()
-			setUser(userData)
+			setUser({
+				firstName: userData?.firstName || 'Иван',
+				lastName: userData?.lastName || 'Иванов',
+				photoUrl: userData?.photoUrl || '',
+				id: userData?.id || 1,
+			})
 		}
 		fetchUser()
-	}, [])
+	}, [setUser])
 
 	return (
 		<div
