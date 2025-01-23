@@ -2,7 +2,7 @@ export interface User {
 	firstName: string
 	lastName?: string
 	photoUrl?: string
-	id?: number
+	id: number
 }
 
 export interface iItem {
