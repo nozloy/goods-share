@@ -1,4 +1,4 @@
-'use server'
+'use client'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { getRents } from '@/lib/prisma'
@@ -14,10 +14,12 @@ interface Props {
 
 export const CurrentRent: React.FC<Props> = async ({ className }) => {
 	const user = await initApp()
-	if (!user) {
-		return
+	let rents: Rents[] = []
+
+	if (user && user.id) {
+		rents = await getRents(user.id)
 	}
-	const rents = await getRents(user.id)
+
 	return (
 		<div className={cn('flex flex-col gap-2 px-4', className)}>
 			{!rents.length ? (
