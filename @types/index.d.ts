@@ -17,6 +17,7 @@ export interface iItem {
 export interface iRentTypes {
 	id: number
 	name: string
+	value: number
 	available: boolean
 	mod: number
 }

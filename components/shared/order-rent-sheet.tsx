@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import {
 	Sheet,
@@ -9,7 +9,7 @@ import {
 	SheetTrigger,
 } from '@/components/ui/sheet'
 import { Button } from '../ui/button'
-import { iItem } from '@/@types'
+import { iItem, User } from '@/@types'
 import Image from 'next/image'
 import { MapPin, Info } from 'lucide-react'
 import { iRentTypes } from '@/@types'
@@ -17,6 +17,10 @@ import { rentTypes } from '@/constants/rent-types'
 import { Slider } from '../ui/slider'
 import { Input } from '../ui/input'
 import { toast } from 'sonner'
+import { addRent } from '@/lib/prisma'
+import { useRouter } from 'next/navigation'
+import { initApp } from './telegram'
+// import { initApp } from './telegram'
 
 interface Props {
 	className?: string
@@ -24,6 +28,25 @@ interface Props {
 }
 
 export const OrderRentSheet: React.FC<Props> = ({ className, item }) => {
+	const router = useRouter()
+	const [user, setUser] = useState<User>()
+
+	// useEffect(() => {
+	// 	setUser({
+	// 		id: 1,
+	// 		firstName: 'Иван',
+	// 		lastName: 'Иванов',
+	// 		photoUrl: 'https://randomuser.me/api/portraits/lego/1.jpg',
+	// 	})
+	// }, [])
+	useEffect(() => {
+		const fetchUser = async () => {
+			const userData = await initApp()
+			setUser(userData)
+		}
+		fetchUser()
+	}, [])
+
 	const [activeRentType, setActiveRentType] = React.useState<iRentTypes>(
 		rentTypes[0],
 	)
@@ -38,6 +61,25 @@ export const OrderRentSheet: React.FC<Props> = ({ className, item }) => {
 			setPromo(false)
 		}
 	}
+	const totalPrice =
+		item.price * activeRentType.mod +
+		item.price * 20 -
+		bonus -
+		(promo ? 500 : 0)
+
+	const hundleOrder = async (
+		itemId: number,
+		price: number,
+		rentType: iRentTypes,
+	) => {
+		if (user && user.id) {
+			await addRent(itemId, price, rentType, user.id)
+			router.push('/rent')
+		} else {
+			toast.error('Пользователь не найден')
+		}
+	}
+
 	return (
 		<div className={cn('', className)}>
 			<Sheet>
@@ -168,13 +210,7 @@ export const OrderRentSheet: React.FC<Props> = ({ className, item }) => {
 									<tr className='border border-muted-foreground/20 border-dashed w-full' />
 									<div className='w-full flex flex-row items-center justify-between'>
 										<p>Итого</p>
-										<p>
-											{item.price * activeRentType.mod +
-												item.price * 20 -
-												bonus -
-												(promo ? 500 : 0)}
-											₽ ₽
-										</p>
+										<p>{totalPrice}₽</p>
 									</div>
 								</div>
 								<div>
@@ -188,6 +224,9 @@ export const OrderRentSheet: React.FC<Props> = ({ className, item }) => {
 										<Button
 											variant={'default'}
 											className='w-full h-12 rounded-xl border-primary'
+											onClick={() => {
+												hundleOrder(item.id, totalPrice, activeRentType)
+											}}
 										>
 											Оформить заказ
 										</Button>
