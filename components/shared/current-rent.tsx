@@ -28,10 +28,13 @@ export const CurrentRent: React.FC<Props> = ({ className }) => {
 		setRents(rentsData)
 	}
 	useEffect(() => {
-		fetchUser()
-		if (user) {
-			fetchRents(user.id)
+		const fetchData = async () => {
+			await fetchUser()
+			if (user) {
+				await fetchRents(user.id)
+			}
 		}
+		fetchData()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 	return (
