@@ -1,5 +1,4 @@
 'use client'
-import React, { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { getRents } from '@/lib/prisma'
@@ -7,36 +6,18 @@ import { Items } from '@/constants/items'
 import Image from 'next/image'
 import { SquareChevronRight } from 'lucide-react'
 import { Rents } from '@prisma/client'
-import { User } from '@/@types'
 import { initApp } from './telegram'
 
 interface Props {
 	className?: string
 }
 
-export const CurrentRent: React.FC<Props> = ({ className }) => {
-	const [rents, setRents] = useState<Rents[]>([])
-	const [user, setUser] = useState<User>()
-
-	const fetchUser = async () => {
-		const userData = await initApp()
-		setUser(userData)
+export const CurrentRent: React.FC<Props> = async ({ className }) => {
+	const user = await initApp()
+	if (!user) {
+		return
 	}
-
-	const fetchRents = async (id: number) => {
-		const rentsData = await getRents(id)
-		setRents(rentsData)
-	}
-	useEffect(() => {
-		const fetchData = async () => {
-			await fetchUser()
-			if (user) {
-				await fetchRents(user.id)
-			}
-		}
-		fetchData()
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	const rents = await getRents(user.id)
 	return (
 		<div className={cn('flex flex-col gap-2 px-4', className)}>
 			{!rents.length ? (
