@@ -9,11 +9,11 @@ export const addRent = async (
 	rentType: iRentTypes,
 	userId: number,
 ) => {
-	console.log(rentType.value)
+	console.log('pullRents', userId)
 	await prisma.rents.create({
 		data: {
 			itemId: itemId,
-			userId: userId.toString(),
+			userId: userId,
 			price: price,
 			rentType: rentType.id,
 			endAt: new Date(Date.now() + rentType.value * 1000),
@@ -23,9 +23,10 @@ export const addRent = async (
 }
 
 export const getRents = async (userId: number) => {
+	console.log('getRents', userId)
 	return await prisma.rents.findMany({
 		where: {
-			userId: userId.toString(),
+			userId: userId,
 		},
 	})
 }

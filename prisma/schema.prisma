@@ -16,7 +16,7 @@ datasource db {
 
 model Rents {
   id         Int      @id @default(autoincrement())
-  userId     String
+  userId     Int
   itemId     Int
   price      Int
   rentType   Int
