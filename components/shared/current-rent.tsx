@@ -1,4 +1,4 @@
-'use client'
+'use server'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { getRents } from '@/lib/prisma'
@@ -22,7 +22,9 @@ export const CurrentRent: React.FC<Props> = async ({ className }) => {
 		<div className={cn('flex flex-col gap-2 px-4', className)}>
 			{!rents.length ? (
 				<div className='border border-muted-foreground border-dashed w-full  p-4 rounded-xl text-center'>
-					<p>У Вас нет арендованных устройств на данный момент ({user?.id})</p>
+					<p>
+						У Вас нет арендованных устройств на данный момент (ID: {user?.id})
+					</p>
 					<Link href={'/catalog'} className='text-primary'>
 						Арендовать устройство
 					</Link>
