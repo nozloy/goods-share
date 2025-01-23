@@ -6,7 +6,6 @@ import { User } from '@/@types'
 import Image from 'next/image'
 import { Check, OctagonAlert, User as UserIcon } from 'lucide-react'
 import { SupportDrawer } from './support-drawer'
-// import { useRouter } from 'next/navigation'
 import { NotificationSheet } from './notification-sheet'
 interface Props {
 	className?: string
@@ -15,7 +14,6 @@ interface Props {
 export const UserCard: React.FC<Props> = ({ className }) => {
 	const [user, setUser] = useState<User | undefined>()
 	const [verified, setVerified] = useState<boolean>(false)
-	// const router = useRouter()
 	useEffect(() => {
 		const fetchUser = async () => {
 			const userData = await initApp()

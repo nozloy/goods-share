@@ -17,19 +17,20 @@ interface Props {
 export const CurrentRent: React.FC<Props> = ({ className }) => {
 	const [rents, setRents] = useState<Rents[]>([])
 	const [user, setUser] = useState<User>()
-	useEffect(() => {
-		const fetchUser = async () => {
-			const userData = await initApp()
-			setUser(userData)
-		}
-		fetchUser()
 
+	const fetchUser = async () => {
+		const userData = await initApp()
+		setUser(userData)
+	}
+
+	const fetchRents = async (id: number) => {
+		const rentsData = await getRents(id)
+		setRents(rentsData)
+	}
+	useEffect(() => {
+		fetchUser()
 		if (user) {
-			const fetchRents = async () => {
-				const rentsData = await getRents(user.id)
-				setRents(rentsData)
-			}
-			fetchRents()
+			fetchRents(user.id)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
@@ -37,7 +38,7 @@ export const CurrentRent: React.FC<Props> = ({ className }) => {
 		<div className={cn('flex flex-col gap-2 px-4', className)}>
 			{!rents.length ? (
 				<div className='border border-muted-foreground border-dashed w-full  p-4 rounded-xl text-center'>
-					<p>У Вас нет арендованных устройств на данный момент</p>
+					<p>У Вас нет арендованных устройств на данный момент ({user?.id})</p>
 					<Link href={'/catalog'} className='text-primary'>
 						Арендовать устройство
 					</Link>
