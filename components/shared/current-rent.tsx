@@ -5,6 +5,7 @@ import { getRents } from '@/lib/prisma'
 import { Items } from '@/constants/items'
 import Image from 'next/image'
 import { SquareChevronRight } from 'lucide-react'
+import { Rents } from '@prisma/client'
 
 interface Props {
 	className?: string
@@ -22,7 +23,7 @@ export const CurrentRent: React.FC<Props> = async ({ className }) => {
 					</Link>
 				</div>
 			) : (
-				rents.map(rent => (
+				rents.map((rent: Rents) => (
 					<div
 						key={rent.id}
 						className='border border-muted-foreground border-dashed w-full  p-4 rounded-xl text-center'
